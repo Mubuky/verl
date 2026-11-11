@@ -312,3 +312,7 @@ Founded in 2023, ByteDance Seed Team is dedicated to crafting the industry's mos
 </div>
 
 We are HIRING! Send us an [email](mailto:the.verl.project@gmail.com) if you are interested in internship/FTE opportunities in RL for agents.
+
+## MiMo maintenance
+
+The `mimo-maint` branch retains native verl training and adds a MiMo runner for Uni-Agent. See the [patch audit and integration contract](docs/mimo-maintenance.md).
