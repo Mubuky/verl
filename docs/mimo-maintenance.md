@@ -84,9 +84,19 @@ sources and remains unverified.
 - MiMo runner and consumer contract/monitoring tests: 36 passed, 1 optional
   Docker-image fixture skipped.
 
-An isolated four-GPU trial reached actual Codex/model generation but no optimizer
-update. Uni-Agent main rejects `parallel_tool_calls=false` on Codex's empty-tool
-compaction request. Failed sessions remained ungraded. The test job was stopped
-and its GPU allocation released. Live compaction, optimizer membership and a
-nonzero saved parameter change remain unverified. This protocol issue belongs
-to Uni-Agent; no verl algorithm or mimoagent compatibility patch was added.
+An isolated four-H200 trial with Codex's default compaction threshold completed
+one native update. Two groups of eight rollouts were consumed, with rewards 6/8
+and 1/8 and no padding. Gradient norm was `0.28590438`; 202,871,959 elements
+changed in the native BF16 HF export, with L2 delta `0.02075249`. The optimizer
+state was 75,281,850,592 bytes. Rollout/training probability correlation was
+`0.99843889`; Token-TIS mean weight was `0.98054516` and effective sample size
+`0.99796887`. All 29 completed sessions passed generation-span, mask and logprob
+checks; three unfinished prefetch sessions remained ungraded. The test job and
+sandbox resources were released. This establishes one effective parameter
+update, not learning benefit or production-scale performance.
+
+A separate forced-compaction trial failed because Uni-Agent main rejects
+`parallel_tool_calls=false` on Codex's empty-tool compaction request. Failed
+sessions remained ungraded and produced no optimizer update. Live compaction
+and optimizer consumption of compacted multi-chain trajectories remain switching
+requirements. No verl algorithm or mimoagent compatibility patch was added.
