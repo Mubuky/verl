@@ -64,9 +64,9 @@ training result.
 The integration targets unchanged
 `XiaomiMiMo/mimoagent@c3df8469f250b15e7906487a6d52be4c1827a509`.
 The six runner-contract cases pass without a mimoagent fork. Joint tests use
-Uni-Agent code `60f443808a6099fb91ee1ac88ae9f710e67f826f` and this recipe at
-`d799866371163b0762302f2a7e5a1f09e15ee9d8`. Uni-Agent `710a0bf` pins this
-revision and has the same Python source tree.
+Uni-Agent code `130b368ceeb667d16f332b83f1a360d6220cbb17` and this recipe at
+`d799866371163b0762302f2a7e5a1f09e15ee9d8`. Uni-Agent pins this companion
+revision. The initial live trials used Uni-Agent code `60f4438`.
 
 ## Validation
 
@@ -80,7 +80,7 @@ sources and remains unverified.
 - Native multi-trajectory GRPO, loss aggregation, Token-TIS, padding,
   ReplayBuffer and a real TransferQueue 0.1.11 service: 95 passed.
 - Uni-Agent gateway/framework, including HTTP/SSE and real Ray actors:
-  717 passed, 9 optional dependency skips, 17 external level1 probes deselected.
+  739 passed, 9 optional dependency skips, 17 external level1 probes deselected.
 - MiMo runner and consumer contract/monitoring tests: 36 passed, 1 optional
   Docker-image fixture skipped.
 
@@ -95,8 +95,32 @@ checks; three unfinished prefetch sessions remained ungraded. The test job and
 sandbox resources were released. This establishes one effective parameter
 update, not learning benefit or production-scale performance.
 
-A separate forced-compaction trial failed because Uni-Agent main rejects
+The initial forced-compaction trial failed because Uni-Agent main rejected
 `parallel_tool_calls=false` on Codex's empty-tool compaction request. Failed
-sessions remained ungraded and produced no optimizer update. Live compaction
-and optimizer consumption of compacted multi-chain trajectories remain switching
-requirements. No verl algorithm or mimoagent compatibility patch was added.
+sessions remained ungraded and produced no optimizer update. Uni-Agent now
+accepts the flag when no callable tools remain, with HTTP/SSE and native
+linear/tree regression coverage. The subsequent live trial also passed actual
+compaction and optimizer consumption of compacted multi-chain trajectories. No
+verl algorithm or mimoagent compatibility patch was added.
+
+The forced-compaction trial consumed 15 rollouts in groups of seven and eight,
+with four and one positive outcomes. All 15 had native Codex compaction events;
+their complete 571 context chains reached the optimizer with five native
+zero-mask padding rows. Rollout-based GRPO produced minimum advantage `-4/7`,
+maximum `7/8`, and generated-token-weighted mean `-0.01095301`, matching native
+metrics. Token/span/mask/logprob checks passed for all 29 graded multi-chain
+sessions (897 chains). One model output-length failure stayed ungraded; two
+unfinished prefetch executions were archived and all test resources released.
+
+One training global step executed 36 native Adam mini-batch updates, confirmed
+by all 760 rank-zero optimizer parameter counters. Gradient norm was
+`0.73928570`; 819,387,878 BF16 weight elements changed with L2 delta `0.30025881`.
+Probability correlation was `0.99883491`; Token-TIS mean weight was `0.97548366`
+and effective sample size `0.99707247`.
+
+Both the previous MiMo trainer and this base split expanded context rows by
+`ppo_mini_batch_size * rollout.n`. A global training step therefore does not imply
+one optimizer update. The 32,768-token auto-compaction threshold was confined to
+the frozen stress trial; the consumer retains Codex's native default. The frozen
+component/runtime combination is ready for switching. New runtime versions,
+production-scale performance and learning benefit remain unverified.
