@@ -97,3 +97,15 @@ def test_model_and_transport_failures_remain_unscored(monkeypatch, status):
             environment_overrides={},
         )
     assert events == ["setup", "cleanup"]
+
+
+def test_sdk_carrier_uses_native_serializable_token_stats():
+    from dataclasses import asdict
+    from mimoagent.models import TokenStats
+
+    model = runner._build_model({}, "http://gateway/v1", agent_type="codex")
+    assert isinstance(model.token_stats, TokenStats)
+    model.token_stats.input_tokens = 7
+    model.token_stats.output_tokens = 3
+    assert model.token_stats.total_tokens == 10
+    assert asdict(model.token_stats)["input_tokens"] == 7

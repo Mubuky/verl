@@ -68,6 +68,13 @@ Uni-Agent code `130b368ceeb667d16f332b83f1a360d6220cbb17` and this recipe at
 `d799866371163b0762302f2a7e5a1f09e15ee9d8`. Uni-Agent pins this companion
 revision. The initial live trials used Uni-Agent code `60f4438`.
 
+## Native model statistics
+
+SDK model carriers reuse `mimoagent.models.TokenStats`, including the native
+`total_tokens` property used by trajectory export. The duplicate recipe dataclass
+is removed; consuming applications no longer need to replace counters before
+`save_traj`. Runner rewards and training algorithms are unchanged.
+
 ## Validation
 
 The isolated Python 3.12.12 runtime uses Torch 2.11.0, vLLM 0.20.2,

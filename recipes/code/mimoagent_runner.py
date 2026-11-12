@@ -24,7 +24,6 @@ import asyncio
 import logging
 import os
 import sys
-from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
 from typing import TYPE_CHECKING, Any
@@ -39,14 +38,6 @@ logger = logging.getLogger(__name__)
 
 _MODEL_BACKED_AGENT_TYPES = {"default", "bashonly-agent", "mimocode-agent", "cc-agent", "codex-agent"}
 _UNGRADABLE_AGENT_STATUSES = {"InfraError", "ModelQueryError", "CodexError"}
-
-
-@dataclass
-class _TokenStats:
-    input_tokens: int = 0
-    output_tokens: int = 0
-    cache_read_tokens: int = 0
-    cache_creation_tokens: int = 0
 
 
 def _load_config(path: str | os.PathLike[str]) -> dict[str, Any]:
@@ -87,9 +78,11 @@ def _build_model(config: dict[str, Any], gateway_url: str, *, agent_type: str):
 
         return get_model(config=model_config)
 
+    from mimoagent.models import TokenStats
+
     return SimpleNamespace(
         config=SimpleNamespace(model_name=model_name, model_kwargs=model_kwargs),
-        token_stats=_TokenStats(),
+        token_stats=TokenStats(),
         n_calls=0,
     )
 
